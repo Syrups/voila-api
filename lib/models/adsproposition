@@ -1,0 +1,75 @@
+// lib/models/adsproposition.js
+
+var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
+
+var schemaOptions = {
+	toObject: {
+		virtuals: true
+	},
+	toJSON: {
+		virtuals: true
+	}
+};
+
+
+//TODO : heritage from proposition http://mongoosejs.com/docs/api.html#model_Model.discriminator
+var schema = new Schema({
+	sender: {
+		type: Schema.Types.ObjectId,
+		ref: 'Advertiser'
+	},
+
+	receivers: [
+		type: Schema.Types.ObjectId,
+		ref: 'User'
+	],
+
+	takers: [
+		type: Schema.Types.ObjectId,
+		ref: 'User'
+	],
+
+	dismissers: [
+		type: Schema.Types.ObjectId,
+		ref: 'User'
+	],
+
+	sentAt: {
+		type: Date,
+		default: Date.now
+	},
+
+	receivedAt: {
+		type: Date,
+		default: null
+	},
+
+	originalProposition: {
+		type: Schema.Types.ObjectId,
+		default: null
+	},
+
+	image: String,
+
+	video: String,
+
+	reproposedCount: {
+		type: Number,
+		default: 0
+	},
+
+	meta: {
+		takeCount: {
+			type: Number,
+			default: 0
+		}
+	}
+}, schemaOptions);
+
+schema.virtual('id').get(function () {
+	return this._id.toHexString();
+});
+
+
+module.exports = mongoose.model('AdsProposition', schema);
