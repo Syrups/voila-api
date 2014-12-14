@@ -1,15 +1,9 @@
 // CONFIG
 
-// module.exports = {
-// 	url: 'kahana.mongohq.com',
-// 	port: '10067',
-// 	user: 'leo',
-// 	password: 'doliprane',
-// 	name: 'tenveux'
-// };
-
 module.exports = {
-	url: 'localhost',
-	port: '27017',
-	name: 'tenveux'
+	url: 'ds063180.mongolab.com',
+	port: '63180',
+	name: 'heroku_app32519883',
+	user: 'tenveux',
+	password: 'jenprends'
 };
