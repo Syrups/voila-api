@@ -1,0 +1,6 @@
+{
+  "name": "T'en veux? Server API",
+  "description": "T'en veux? Server API",
+  "repository": "https://bitbucket.org/leoht/tenveux-back",
+  "keywords": ["node", "express", "static"]
+}
