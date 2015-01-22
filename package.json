@@ -32,7 +32,8 @@
     "key-del": "^0.1.6",
     "mongoose": "~3.8.16",
     "nodemon": "^1.2.1",
-    "passport": "~0.2.1"
+    "passport": "~0.2.1",
+    "supertest": "^0.15.0"
   },
   "devDependencies": {
     "grunt-contrib-jshint": "^0.10.0",
