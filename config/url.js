@@ -1,3 +1,3 @@
 module.exports = {
-	mediaRootUrl: 'http://localhost:5000/media'
+	mediaRootUrl: 'http://tenveux.herokuapp.com/media'
 };
