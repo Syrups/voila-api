@@ -22,9 +22,24 @@ describe('POST /users', function() {
    			assert('id' in res, 'ID is not present');
    			assert('token' in res, 'Token is not present');
 
-   			User.findByIdAndRemove(res.id, done);
+        User.findByIdAndRemove(res.id, done);
    		});
   });
+
+  it('should reponds 409 conflict if username is already taken', function(done) {
+    User.create({ username: 'foo' }, function (err, user) {
+      request(app)
+      .post('/api/users')
+      .send({
+        username: 'foo',
+        password: 'bar'
+      })
+      .expect(409, function () {
+        User.findByIdAndRemove(user.id, done);
+      });
+    });
+  });
+
 });
 
 describe('GET /users/authenticate', function() {
@@ -53,7 +68,7 @@ describe('GET /users/authenticate', function() {
   	  .get('/api/users/authenticate')
   	  .send({
   	    username: 'foo',
-   		password: 'bar'
+   		   password: 'bar'
   	  })
   	  .expect(200)
   	  .end(function (err, req) {
@@ -164,19 +179,19 @@ describe('POST /users/friends', function () {
       });
   });
 
-  it('should add friend and have user ID in friend friends', function () {
-    request(app)
-      .post('/api/users/friends')
-      .send({
-        friend_id: friendId
-      })
-      .set('X-Authorization-Token', token)
-      .expect(200, function (err, req) {
-          res = JSON.parse(req.res.text);
+  // it('should add friend and have user ID in friend friends', function () {
+  //   request(app)
+  //     .post('/api/users/friends')
+  //     .send({
+  //       friend_id: friendId
+  //     })
+  //     .set('X-Authorization-Token', token)
+  //     .expect(200, function (err, req) {
+  //         res = JSON.parse(req.res.text);
           
-          assert(res.friends.indexOf(id) != -1, 'User ID is not present in friend friends array');
-      });
-  });
+  //         assert(res.friends.indexOf(id) != -1, 'User ID is not present in friend friends array');
+  //     });
+  // });
 
   after(function (done) {
     User.findByIdAndRemove(id, function () {
