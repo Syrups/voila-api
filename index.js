@@ -1,15 +1,15 @@
 /*
- * 
+ *
  * https://github.com/leoht/tenveux
  *
- * Copyright (c) 2014 
+ * Copyright (c) 2014
  * Licensed under the MIT license.
  */
- 'use strict';
+'use strict';
 
- var app = require('./lib/app').app;
- var port = Number(process.env.PORT || 5000);
+var app = require('./lib/app').app;
+var port = Number(process.env.PORT || 5000);
 
- app.listen(port);
- 
- console.log(' [x] Listening on port ' + port);
+app.listen(port);
+
+console.log(' [x] Listening on port ' + port);
