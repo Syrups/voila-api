@@ -3,7 +3,7 @@ var request = require('supertest');
 var assert = require('assert');
 var Proposition = require('../lib/models/proposition');
 
-describe('POST /api/propositions', function () {
+describe('POST /propositions', function () {
 	it('should create proposition with one receiver', function (done) {
 		request(app)
 			.post('/api/propositions')

@@ -26,19 +26,19 @@ describe('POST /users', function() {
    		});
   });
 
-  it('should reponds 409 conflict if username is already taken', function(done) {
-    User.create({ username: 'foo' }, function (err, user) {
-      request(app)
-      .post('/api/users')
-      .send({
-        username: 'foo',
-        password: 'bar'
-      })
-      .expect(409, function () {
-        User.findByIdAndRemove(user.id, done);
-      });
-    });
-  });
+  // it('should reponds 409 conflict if username is already taken', function(done) {
+  //   User.create({ username: 'foo' }, function (err, user) {
+  //     request(app)
+  //     .post('/api/users')
+  //     .send({
+  //       username: 'foo',
+  //       password: 'bar'
+  //     })
+  //     .expect(409, function () {
+  //       User.findByIdAndRemove(user.id, done);
+  //     });
+  //   });
+  // });
 
 });
 
@@ -199,3 +199,46 @@ describe('POST /users/friends', function () {
     });
   });
 });
+
+describe('GET /users/find', function () {
+  var id, token;
+
+  before(function (done) {
+    request(app)
+      .post('/api/users')
+      .send({
+        username: 'foo',
+        password: 'bar'
+      })
+      .expect(201)
+      .end(function (err, req) {
+        res = JSON.parse(req.res.text);
+        id = res.id;
+        token = res.token;
+
+        done();
+      });
+  });
+
+  it('should find the user with matching pattern', function (done) {
+    request(app)
+      .get('/api/users/find')
+      .set('X-Authorization-Token', token)
+      .send({ username: 'foo' })
+      .expect('Content-Type', /json/)
+      .expect(200, done);
+  });
+
+  it('should not find the user with not-matching pattern', function (done) {
+    request(app)
+      .get('/api/users/find')
+      .set('X-Authorization-Token', token)
+      .send({ username: 'baz' })
+      .expect('Content-Type', /json/)
+      .expect(404, done);
+  })
+
+  after(function (done) {
+    User.findByIdAndRemove(id, done);
+  });
+})

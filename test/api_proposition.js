@@ -46,7 +46,7 @@ describe('POST /propositions', function () {
 
 				data = res.data;
 
-				assert('id' in data, 'id is not present in Data');
+				assert('_id' in data, 'id is not present in Data');
 
 				Proposition.findByIdAndRemove(data.id, done);
 			});
