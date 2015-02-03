@@ -8,17 +8,17 @@ module.exports = {
 
 	},
 
-	createUser: function (username, password, callback) {
+	createUser: function (username, password, email, callback) {
 		request(app)
 			.post('/api/users')
 			.send({
 				username: username,
-				password: password
+				password: password,
+				email: email
 			})
 			.expect(201)
 			.end(function (err, req) {
-				res = JSON.parse(req.res.text);
-
+				res = req.res.body;
 				callback(res);
 			});
 	}
