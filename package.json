@@ -47,7 +47,7 @@
   },
   "scripts": {
     "start": "node index.js",
-    "test": "grunt",
+    "test": "mocha",
     "browser": "browserify lib/tenveux.js > browser.js",
     "coverage": "./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha -- --ui bdd -R spec -t 5000"
   },
