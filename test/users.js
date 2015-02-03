@@ -82,9 +82,7 @@ describe('GET /users/authenticate', function () {
                 res = JSON.parse(req.res.text);
 
                 assert('token' in res, 'Token is not present in response');
-                console.log('%s == %s', res.token, token);
                 assert(res.token == token, 'Token is not the good one');
-
 
                 done();
             });
@@ -248,7 +246,7 @@ describe('GET /users/find', function () {
                 username: 'baz'
             })
             .expect('Content-Type', /json/)
-        .expect(404, done);
+            .expect(404, done);
     })
 
     after(function (done) {

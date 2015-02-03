@@ -21,6 +21,8 @@ describe('Prospositions API', function () {
 
 	var prodsition1ID, prodsition2ID;
 
+	var filname;
+
 	before(function (done) {
 
 		Utils.createUser('oof', 'rab', 'o@gmail.com', function (res) {
@@ -52,6 +54,20 @@ describe('Prospositions API', function () {
 			done();
 		});
 
+	});
+
+	it('should create new media', function (done) {
+		request(app)
+			.post('/images')
+			.set('X-Authorization-Token', token)
+			.attach('file', __dirname + '/test.jpg')
+			.expect(201).end(function (err, req) {
+				var file = req.res.body;
+
+				assert('filename' in file, 'Data is not present in response');
+
+				done();
+			})
 	});
 
 	describe('POST /propositions', function () {

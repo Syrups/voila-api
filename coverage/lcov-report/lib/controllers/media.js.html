@@ -195,20 +195,20 @@
     </style>
 </head>
 <body>
-<div class="header low">
+<div class="header high">
     <h1>Code coverage report for <span class="entity">lib/controllers/media.js</span></h1>
     <h2>
         
-        Statements: <span class="metric">14.29% <small>(2 / 14)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Statements: <span class="metric">100% <small>(15 / 15)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
         
         
         Branches: <span class="metric">100% <small>(0 / 0)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
         
         
-        Functions: <span class="metric">0% <small>(0 / 3)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Functions: <span class="metric">100% <small>(3 / 3)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
         
         
-        Lines: <span class="metric">14.29% <small>(2 / 14)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Lines: <span class="metric">100% <small>(15 / 15)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
         
         Ignored: <span class="metric"><span class="ignore-none">none</span></span> &nbsp;&nbsp;&nbsp;&nbsp;
     </h2>
@@ -240,48 +240,81 @@
 22
 23
 24
-25</td><td class="line-coverage"><span class="cline-any cline-yes">1</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36</td><td class="line-coverage"><span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1</span></td><td class="text"><pre class="prettyprint lang-js">var MediaController = {
-	create: <span class="fstat-no" title="function not covered" >function (req, res, next) {</span>
-<span class="cstat-no" title="statement not covered" >		var fstream;</span>
-<span class="cstat-no" title="statement not covered" >		var md5 = crypto.createHash('md5');</span>
-<span class="cstat-no" title="statement not covered" >		req.pipe(req.busboy);</span>
-<span class="cstat-no" title="statement not covered" >		req.busboy.on('file', <span class="fstat-no" title="function not covered" >function (fieldname, file, filename) {</span></span>
-<span class="cstat-no" title="statement not covered" >			var d = new Date();</span>
-<span class="cstat-no" title="statement not covered" >			filename = md5.update(filename + d.toString()).digest('hex') + ".jpg";</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span></td><td class="text"><pre class="prettyprint lang-js">var crypto = require('crypto');
+var fs = require('fs');
 &nbsp;
-<span class="cstat-no" title="statement not covered" >			console.log("Uploading: " + filename);</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >			path = __dirname + '/../uploads/' + filename;</span>
-<span class="cstat-no" title="statement not covered" >			fstream = fs.createWriteStream(path);</span>
-<span class="cstat-no" title="statement not covered" >			file.pipe(fstream);</span>
-<span class="cstat-no" title="statement not covered" >			fstream.on('close', <span class="fstat-no" title="function not covered" >function () {</span></span>
-<span class="cstat-no" title="statement not covered" >				res.status(201).json({</span>
-					code: 201,
-					filename: conf.mediaRootUrl + '/' + filename
+/**
+TODO : upload on google appEngine !
+*/
+var MediaController = {
+	create: function (req, res, next) {
+		var fstream;
+		var md5 = crypto.createHash('md5');
+&nbsp;
+		req.pipe(req.busboy);
+&nbsp;
+		req.busboy.on('file', function (fieldname, file, filename) {
+			var d = new Date();
+			filename = md5.update(filename + d.toString()).digest('hex') + ".jpg";
+&nbsp;
+&nbsp;
+&nbsp;
+			path = __dirname + '/../../uploads/' + filename;
+			fstream = fs.createWriteStream(path);
+			file.pipe(fstream);
+			fstream.on('close', function () {
+&nbsp;
+				//console.log("Uploading: %s ", fullUrl + '/' + filename);
+&nbsp;
+				res.status(201).json({
+					filename: filename
 				});
 			});
 		});
@@ -293,7 +326,7 @@ module.exports = MediaController;</pre></td></tr>
 
 </div>
 <div class="footer">
-    <div class="meta">Generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Tue Feb 03 2015 16:39:04 GMT+0100 (CET)</div>
+    <div class="meta">Generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Tue Feb 03 2015 22:23:33 GMT+0100 (CET)</div>
 </div>
 
 <script src="../../prettify.js"></script>
