@@ -54,8 +54,6 @@ describe('Prospositions API', function () {
 
 	});
 
-
-
 	describe('POST /propositions', function () {
 		it('should create new proposition', function (done) {
 			request(app)
@@ -85,7 +83,7 @@ describe('Prospositions API', function () {
 
 			request(app)
 				.post('/api/propositions')
-				.set('X-Authorization-Token', token)
+				.set('X-Authorization-Token', glennToken)
 				.send({
 					receivers: reReceivers,
 					originalProposition: prodsition1ID
@@ -125,51 +123,111 @@ describe('Prospositions API', function () {
 		});
 	});
 
-	describe('PUT /propositions/:id/take', function () {
-		it('Glenn should take proposition', function (done) {
+
+	describe('PUT /propositions/:id', function () {
+
+		it('/take : Glenn should take proposition', function (done) {
 
 			var id = new ObjectId(prodsition1ID);
 
 			request(app)
-				.put('api/propositions/' + id + '/take')
+				.put('/api/propositions/' + id + '/take')
 				.set('X-Authorization-Token', glennToken)
 				.expect(200).end(function (err, req) {
-					//data = req.res.body;
 
-					//assert('message' in data, 'message is not present in Data');
+					data = req.res.body;
 
-					//console.log(data.message);
+					assert('message' in data, 'message is not present in Data');
+
+					done();
+				});
+		});
+
+		it('/dismiss : Syl should dismiss proposition', function (done) {
+
+			var id = new ObjectId(prodsition1ID);
+
+			request(app)
+				.put('/api/propositions/' + id + '/dismiss')
+				.set('X-Authorization-Token', sylToken)
+				.expect(200).end(function (err, req) {
+
+					data = req.res.body;
+
+					assert('message' in data, 'message is not present in Data');
+
 					done();
 				});
 		});
 	});
 
+	describe('GET /propositions/:id', function () {
+		it('/ should return proposition', function (done) {
 
+			var id = new ObjectId(prodsition1ID);
+
+			request(app)
+				.get('/api/propositions/' + id)
+				.set('X-Authorization-Token', glennToken)
+				.expect(200).end(function (err, req) {
+
+					assert('_id' in req.res.body, 'message is not present in Data');
+
+					done();
+				});
+		});
+
+		it('/ should return proposition takers', function (done) {
+
+			var id = new ObjectId(prodsition1ID);
+
+			request(app)
+				.get('/api/propositions/' + id + "/takers")
+				.set('X-Authorization-Token', glennToken)
+				.expect(200).end(function (err, req) {
+
+					assert('takers' in req.res.body, 'takers is not present in Propostion');
+
+					done();
+				});
+		});
+
+		it('/ should trhow 500', function (done) {
+			request(app)
+				.get('/api/propositions/aZEBJ323é')
+				.set('X-Authorization-Token', glennToken)
+				.expect(500).end(function (err, req) {
+
+					//assert('_id' in req.res.body, 'message is not present in Data');
+
+					done();
+				});
+		});
+	});
 
 	after(function (done) {
-		console.log('after');
 
-		/*Proposition.findByIdAndRemove(prodsition1ID, function (err, results) {
-			console.log('prodsition1ID', results.id);
+		Proposition.findByIdAndRemove(prodsition1ID, function (err, results) {
+			//console.log('prodsition1ID', results.id);
 		});
 
 		Proposition.findByIdAndRemove(prodsition2ID, function (err, results) {
-			console.log('prodsition2ID', results.id);
+			//console.log('prodsition2ID', results.id);
 		});
 
 		User.findByIdAndRemove(glennID, function (err, results) {
-			console.log('glennID', results.id);
+			//console.log('glennID', results.id);
 		});
 
 		User.findByIdAndRemove(leoID, function (err, results) {
-			console.log('leoID', results.id);
+			//console.log('leoID', results.id);
 		});
 		User.findByIdAndRemove(sylID, function (err, results) {
-			console.log('sylID', results.id);
+			//console.log('sylID', results.id);
 		});
 
-		User.findByIdAndRemove(oofId, done);*/
-		done();
+		User.findByIdAndRemove(oofId, done);
+		//done();
 
 	});
 });
