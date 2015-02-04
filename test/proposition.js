@@ -225,8 +225,6 @@ describe('Prospositions API', function () {
 
 	after(function (done) {
 
-
-
 		Proposition.findByIdAndRemove(prodsition1ID, function (err, results) {
 			//console.log('prodsition1ID', results.id);
 			Media.remove(fileName);
@@ -249,6 +247,5 @@ describe('Prospositions API', function () {
 
 		User.findByIdAndRemove(oofId, done);
 		//done();
-
 	});
 });
