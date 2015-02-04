@@ -3,6 +3,7 @@ var request = require('supertest');
 var assert = require('chai').assert;
 var Proposition = require('../lib/models/proposition');
 var User = require('../lib/models/user');
+var Answer = require('../lib/models/answer');
 
 var ObjectId = require('mongoose').Types.ObjectId;
 
@@ -57,7 +58,6 @@ describe('Prospositions API', function () {
 	});
 
 
-
 	it('should create new media', function (done) {
 		request(app)
 			.post('/images')
@@ -94,7 +94,7 @@ describe('Prospositions API', function () {
 					prodsition1ID = data.id;
 
 					done();
-					//Proposition.findByIdAndRemove(data.id, done);	
+					//Proposition.findByIdAndRemove(data.id, done);
 				})
 		});
 
@@ -234,6 +234,13 @@ describe('Prospositions API', function () {
 				.set('X-Authorization-Token', glennToken)
 				.expect(403, done);
 		});
+
+		after(function (done) {
+			Answer.findByIdAndRemove(answers[0]._id, function (err, results) {
+				Answer.findByIdAndRemove(answers[1]._id, done);
+			});
+		});
+
 	});
 
 	describe('GET /propositions/:id', function () {

@@ -15,7 +15,6 @@ describe('Users API', function () {
 
     // before(function (done) {});
 
-
     describe('POST /users', function () {
         it('should return new user data', function (done) {
 
