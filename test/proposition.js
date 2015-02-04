@@ -1,6 +1,6 @@
 var app = require('../lib/app').app;
 var request = require('supertest');
-var assert = require('assert');
+var assert = require('chai').assert;
 var Proposition = require('../lib/models/proposition');
 var User = require('../lib/models/user');
 
@@ -54,8 +54,9 @@ describe('Prospositions API', function () {
 
 			done();
 		});
-
 	});
+
+
 
 	it('should create new media', function (done) {
 		request(app)
@@ -176,6 +177,62 @@ describe('Prospositions API', function () {
 
 					done();
 				});
+		});
+
+		var answers;
+
+		it('/users/:id/answers should return glenn\'s pending answers', function (done) {
+			request(app)
+				.get('/api/users/' + oofId + '/answers')
+				.set('X-Authorization-Token', token)
+				.expect(200)
+				.end(function (err, req) {
+
+					answers = req.res.body
+
+					assert.isArray(answers, "answers is not array");
+					assert.lengthOf(answers, 2, 'answers has not length of 2');
+
+					done();
+				});
+		});
+
+		it('/answers/:id/acknowledge : oof should asknowlege answer from previous proposition', function (done) {
+
+			var answer = answers[0];
+			var id = new ObjectId(answer._id);
+
+			request(app)
+				.put('/api/answers/' + id + '/acknowledge')
+				.set('X-Authorization-Token', token)
+				.expect(200)
+				.end(function (err, req) {
+
+					var data = req.res.body;
+
+					assert('message' in data, 'message is not present in Data');
+
+					done();
+				});
+		});
+
+		it('/answers/:id/acknowledge : should throw 404', function (done) {
+
+			request(app)
+				.put('/api/answers/989O8n3n8/acknowledge')
+				.set('X-Authorization-Token', token)
+				.expect(404, done);
+		});
+
+		it('/answers/:id/acknowledge : should throw 403 unauthorized', function (done) {
+
+			var answer = answers[1];
+			var id = new ObjectId(answer._id);
+
+			request(app)
+				.put('/api/answers/' + id + '/acknowledge')
+				.set('X-Authorization-Token', glennToken)
+				.expect(403, done);
 		});
 	});
 
