@@ -88,7 +88,6 @@ describe('Users API', function () {
                     });
             });
 
-
             it('should throw not found with bad username', function (done) {
                 request(app)
                     .get('/api/users/authenticate')
@@ -148,6 +147,19 @@ describe('Users API', function () {
                 request(app)
                     .get('/api/users/' + leoID + '/friends')
                     .set('X-Authorization-Token', glennToken)
+                    .expect(403, done);
+            });
+
+            it('/users/:id/friends should throw 403 No token provided', function (done) {
+                request(app)
+                    .get('/api/users/' + leoID + '/friends')
+                    .expect(403, done);
+            });
+
+            it('/users/:id/friends should throw 403 Invalid token', function (done) {
+                request(app)
+                    .get('/api/users/' + leoID + '/friends')
+                    .set('X-Authorization-Token', 'glennToken')
                     .expect(403, done);
             });
 
@@ -281,65 +293,6 @@ describe('Users API', function () {
         });
     });
 
-
-    describe('POST /users/friends', function () {
-        var id, token, friendId, friendToken;
-
-        // before(function (done) {
-        //     request(app)
-        //         .post('/api/users')
-        //         .send({
-        //             username: 'foo',
-        //             password: 'bar'
-        //         })
-        //         .expect(201)
-        //         .end(function (err, req) {
-        //             res = JSON.parse(req.res.text);
-        //             id = res.id;
-        //             token = res.token;
-
-        //             done();
-        //         });
-        // });
-
-        // before(function (done) {
-        //     request(app)
-        //         .post('/api/users')
-        //         .send({
-        //             username: 'foo2',
-        //             password: 'bar2'
-        //         })
-        //         .expect(201)
-        //         .end(function (err, req) {
-        //             res = JSON.parse(req.res.text);
-        //             friendId = res.id;
-        //             friendToken = res.token;
-
-        //             done();
-        //         });
-        // });
-
-        // it('should add friend and have user ID in friend friends', function () {
-        //   request(app)
-        //     .post('/api/users/friends')
-        //     .send({
-        //       friend_id: friendId
-        //     })
-        //     .set('X-Authorization-Token', token)
-        //     .expect(200, function (err, req) {
-        //         res = JSON.parse(req.res.text);
-
-        //         assert(res.friends.indexOf(id) != -1, 'User ID is not present in friend friends array');
-        //     });
-        // });
-
-        /*after(function (done) {
-            User.findByIdAndRemove(id, function () {
-                User.findByIdAndRemove(friendId, done);
-            });
-        });*/
-    });
-
     describe('GET /users/find', function () {
         var id, token;
 
@@ -385,9 +338,5 @@ describe('Users API', function () {
         after(function (done) {
             User.findByIdAndRemove(id, done);
         });
-    });
-
-    describe('GET /users/:id/friends', function (done) {
-
     });
 });
