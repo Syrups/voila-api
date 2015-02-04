@@ -8,6 +8,7 @@ var ObjectId = require('mongoose').Types.ObjectId;
 
 
 var Utils = require('./test_utils');
+var Media = require('../lib/controllers/media');
 
 describe('Prospositions API', function () {
 
@@ -20,6 +21,8 @@ describe('Prospositions API', function () {
 	var data;
 
 	var prodsition1ID, prodsition2ID;
+
+	var fileName;
 
 	before(function (done) {
 
@@ -54,6 +57,21 @@ describe('Prospositions API', function () {
 
 	});
 
+	it('should create new media', function (done) {
+		request(app)
+			.post('/images')
+			.set('X-Authorization-Token', token)
+			.attach('file', __dirname + '/test.jpg')
+			.expect(201).end(function (err, req) {
+				var file = req.res.body;
+				fileName = file.filename;
+
+				assert('filename' in file, 'filename is not present in response');
+
+				done();
+			})
+	});
+
 	describe('POST /propositions', function () {
 		it('should create new proposition', function (done) {
 			request(app)
@@ -61,7 +79,7 @@ describe('Prospositions API', function () {
 				.set('X-Authorization-Token', token)
 				.send({
 					receivers: receivers,
-					image: "http://www.online-image-editor.com//styles/2014/images/example_image.png"
+					image: fileName
 				})
 				.expect(201).end(function (err, req) {
 					var res = req.res.body;
@@ -207,8 +225,11 @@ describe('Prospositions API', function () {
 
 	after(function (done) {
 
+
+
 		Proposition.findByIdAndRemove(prodsition1ID, function (err, results) {
 			//console.log('prodsition1ID', results.id);
+			Media.remove(fileName);
 		});
 
 		Proposition.findByIdAndRemove(prodsition2ID, function (err, results) {

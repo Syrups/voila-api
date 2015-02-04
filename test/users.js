@@ -84,6 +84,7 @@ describe('Users API', function () {
                 });
         });
 
+
         it('should throw not found with bad username', function (done) {
             request(app)
                 .get('/api/users/authenticate')
@@ -254,4 +255,20 @@ describe('Users API', function () {
         
     });
 });
+
+    it('should not find the user with not-matching pattern', function (done) {
+        request(app)
+            .get('/api/users/find')
+            .set('X-Authorization-Token', token)
+            .send({
+                username: 'baz'
+            })
+            .expect('Content-Type', /json/)
+            .expect(404, done);
+    })
+
+    after(function (done) {
+        User.findByIdAndRemove(id, done);
+    });
+})
 
