@@ -314,22 +314,16 @@ describe('Users API', function () {
 
         it('should find the user with matching pattern', function (done) {
             request(app)
-                .get('/api/users/find')
+                .get('/api/users/find/foo')
                 .set('X-Authorization-Token', token)
-                .send({
-                    username: 'foo'
-                })
                 .expect('Content-Type', /json/)
                 .expect(200, done);
         });
 
         it('should not find the user with not-matching pattern', function (done) {
             request(app)
-                .get('/api/users/find')
+                .get('/api/users/find/baz')
                 .set('X-Authorization-Token', token)
-                .send({
-                    username: 'baz'
-                })
                 .expect('Content-Type', /json/)
                 .expect(404, done);
         })
