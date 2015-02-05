@@ -16,8 +16,8 @@ describe('Prospositions API', function () {
 	var receivers = [];
 	var reReceivers = [];
 
-	var glennID, sylID, leoID, oofId, fizID;
-	var token, glennToken, sylToken;
+	var larryID, sylID, leoID, oofId, fizID;
+	var token, larryToken, sylToken;
 
 	var data;
 
@@ -32,11 +32,11 @@ describe('Prospositions API', function () {
 			token = res.token;
 		});
 
-		Utils.createUser('glenn', 'google', 'g@gmail.com', function (res) {
-			glennID = res.id;
-			glennToken = res.token;
+		Utils.createUser('larry', 'google', 'g@gmail.com', function (res) {
+			larryID = res.id;
+			larryToken = res.token;
 
-			receivers.push(glennID);
+			receivers.push(larryID);
 
 		});
 
@@ -102,7 +102,7 @@ describe('Prospositions API', function () {
 
 			request(app)
 				.post('/api/propositions')
-				.set('X-Authorization-Token', glennToken)
+				.set('X-Authorization-Token', larryToken)
 				.send({
 					receivers: reReceivers,
 					originalProposition: prodsition1ID
@@ -145,18 +145,31 @@ describe('Prospositions API', function () {
 
 	describe('PUT /propositions/:id', function () {
 
-		it('/take : Glenn should take proposition', function (done) {
+		it('/take : larry should take proposition', function (done) {
 
 			var id = new ObjectId(prodsition1ID);
 
 			request(app)
 				.put('/api/propositions/' + id + '/take')
-				.set('X-Authorization-Token', glennToken)
+				.set('X-Authorization-Token', larryToken)
 				.expect(200).end(function (err, req) {
 
 					data = req.res.body;
 
 					assert('message' in data, 'message is not present in Data');
+
+					done();
+				});
+		});
+
+		it('/users/:id/pending should return Syl\'s pending proposition', function (done) {
+			request(app)
+				.get('/api/users/' + sylID + '/pending')
+				.set('X-Authorization-Token', sylToken)
+				.expect(200)
+				.end(function (err, req) {
+					console.log(req.res.body);
+					assert.isArray(req.res.body, "result is not array");
 
 					done();
 				});
@@ -181,7 +194,7 @@ describe('Prospositions API', function () {
 
 		var answers;
 
-		it('/users/:id/answers should return glenn\'s pending answers', function (done) {
+		it('/users/:id/answers should return larry\'s pending answers', function (done) {
 			request(app)
 				.get('/api/users/' + oofId + '/answers')
 				.set('X-Authorization-Token', token)
@@ -231,7 +244,7 @@ describe('Prospositions API', function () {
 
 			request(app)
 				.put('/api/answers/' + id + '/acknowledge')
-				.set('X-Authorization-Token', glennToken)
+				.set('X-Authorization-Token', larryToken)
 				.expect(403, done);
 		});
 
@@ -250,7 +263,7 @@ describe('Prospositions API', function () {
 
 			request(app)
 				.get('/api/propositions/' + id)
-				.set('X-Authorization-Token', glennToken)
+				.set('X-Authorization-Token', larryToken)
 				.expect(200).end(function (err, req) {
 
 					assert('_id' in req.res.body, 'message is not present in Data');
@@ -265,7 +278,7 @@ describe('Prospositions API', function () {
 
 			request(app)
 				.get('/api/propositions/' + id + "/takers")
-				.set('X-Authorization-Token', glennToken)
+				.set('X-Authorization-Token', larryToken)
 				.expect(200).end(function (err, req) {
 
 					assert('takers' in req.res.body, 'takers is not present in Propostion');
@@ -277,7 +290,7 @@ describe('Prospositions API', function () {
 		it('/ should trhow 500', function (done) {
 			request(app)
 				.get('/api/propositions/aZEBJ323é')
-				.set('X-Authorization-Token', glennToken)
+				.set('X-Authorization-Token', larryToken)
 				.expect(500).end(function (err, req) {
 
 					//assert('_id' in req.res.body, 'message is not present in Data');
@@ -298,8 +311,8 @@ describe('Prospositions API', function () {
 			//console.log('prodsition2ID', results.id);
 		});
 
-		User.findByIdAndRemove(glennID, function (err, results) {
-			//console.log('glennID', results.id);
+		User.findByIdAndRemove(larryID, function (err, results) {
+			//console.log('larryID', results.id);
 		});
 
 		User.findByIdAndRemove(leoID, function (err, results) {
