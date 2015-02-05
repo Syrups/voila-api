@@ -13,6 +13,7 @@
     "type": "git",
     "url": "https://bitbucket.org/leoht/tenveux-back"
   },
+
   "license": "MIT",
   "files": [
     "lib"
