@@ -43,15 +43,15 @@ describe('Users API', function () {
     });
 
     describe('Users Actions', function () {
-        var glennID, sylID, leoID;
-        var glennToken, sylToken;
+        var larryID, sylID, leoID;
+        var larryToken, sylToken;
 
         before(function (done) {
 
 
-            Utils.createUser('glenn', 'google', 'g@gmail.com', function (res) {
-                glennID = res.id;
-                glennToken = res.token;
+            Utils.createUser('larry', 'google', 'g@gmail.com', function (res) {
+                larryID = res.id;
+                larryToken = res.token;
             });
 
             Utils.createUser('syl', 'tise', 'st@gmail.com', function (res) {
@@ -72,7 +72,7 @@ describe('Users API', function () {
                 request(app)
                     .get('/api/users/authenticate')
                     .send({
-                        username: 'glenn',
+                        username: 'larry',
                         password: 'google'
                     })
                     .expect(200)
@@ -80,7 +80,7 @@ describe('Users API', function () {
                         res = JSON.parse(req.res.text);
 
                         assert('token' in res, 'Token is not present in response');
-                        assert(res.token == glennToken, 'Token is not the good one');
+                        assert(res.token == larryToken, 'Token is not the good one');
 
                         done();
 
@@ -101,7 +101,7 @@ describe('Users API', function () {
                 request(app)
                     .get('/api/users/authenticate')
                     .send({
-                        username: 'glenn',
+                        username: 'larry',
                         password: 'baz'
                     })
                     .expect(403, done);
@@ -110,10 +110,10 @@ describe('Users API', function () {
 
         describe('User API Friends', function () {
 
-            it('/users/:id/addFriends Glenn should add leo as a friend', function (done) {
+            it('/users/:id/addFriends larry should add leo as a friend', function (done) {
                 request(app)
-                    .put('/api/users/' + glennID + '/addfriends')
-                    .set('X-Authorization-Token', glennToken)
+                    .put('/api/users/' + larryID + '/addfriends')
+                    .set('X-Authorization-Token', larryToken)
                     .send({
                         friend_id: leoID,
                     })
@@ -124,16 +124,16 @@ describe('Users API', function () {
                         //res = JSON.parse(req.res.text);
 
                         //assert('token' in res, 'Token is not present in response');
-                        //assert(res.token == glennToken, 'Token is not the good one');
+                        //assert(res.token == larryToken, 'Token is not the good one');
 
                         done();
                     });
             });
 
-            it('/users/:id/friends should return glenn\'s friends', function (done) {
+            it('/users/:id/friends should return larry\'s friends', function (done) {
                 request(app)
-                    .get('/api/users/' + glennID + '/friends')
-                    .set('X-Authorization-Token', glennToken)
+                    .get('/api/users/' + larryID + '/friends')
+                    .set('X-Authorization-Token', larryToken)
                     .expect(200)
                     .end(function (err, req) {
                         assert.isArray(req.res.body, "result is not array");
@@ -145,7 +145,7 @@ describe('Users API', function () {
             it('/users/:id/friends should throw 403 error', function (done) {
                 request(app)
                     .get('/api/users/' + leoID + '/friends')
-                    .set('X-Authorization-Token', glennToken)
+                    .set('X-Authorization-Token', larryToken)
                     .expect(403, done);
             });
 
@@ -158,21 +158,21 @@ describe('Users API', function () {
             it('/users/:id/friends should throw 403 Invalid token', function (done) {
                 request(app)
                     .get('/api/users/' + leoID + '/friends')
-                    .set('X-Authorization-Token', 'glennToken')
+                    .set('X-Authorization-Token', 'larryToken')
                     .expect(403, done);
             });
 
-            it('/users/:id/taken should return glenn\'s taken proposition', function (done) {
+            it('/users/:id/taken should return larry\'s taken proposition', function (done) {
                 request(app)
-                    .get('/api/users/' + glennID + '/taken')
-                    .set('X-Authorization-Token', glennToken)
+                    .get('/api/users/' + larryID + '/taken')
+                    .set('X-Authorization-Token', larryToken)
                     .expect(200, done);
             });
 
-            it('/users/:id/pending should return glenn\'s pending proposition', function (done) {
+            it('/users/:id/pending should return larry\'s pending proposition', function (done) {
                 request(app)
-                    .get('/api/users/' + glennID + '/pending')
-                    .set('X-Authorization-Token', glennToken)
+                    .get('/api/users/' + larryID + '/pending')
+                    .set('X-Authorization-Token', larryToken)
                     .expect(200)
                     .end(function (err, req) {
                         assert.isArray(req.res.body, "result is not array");
@@ -181,10 +181,24 @@ describe('Users API', function () {
                     });
             });
 
-            it('/users/:id/received should return glenn\'s received proposition', function (done) {
+            it('/users/:id/received should return larry\'s received proposition', function (done) {
                 request(app)
-                    .get('/api/users/' + glennID + '/received')
-                    .set('X-Authorization-Token', glennToken)
+                    .get('/api/users/' + larryID + '/received')
+                    .set('X-Authorization-Token', larryToken)
+                    .expect(200)
+                    .end(function (err, req) {
+
+
+                        assert.isArray(req.res.body, "result is not array");
+
+                        done();
+                    });
+            });
+
+            it('/users/:id/sent should return larry\'s sent proposition', function (done) {
+                request(app)
+                    .get('/api/users/' + larryID + '/sent')
+                    .set('X-Authorization-Token', larryToken)
                     .expect(200)
                     .end(function (err, req) {
                         assert.isArray(req.res.body, "result is not array");
@@ -193,22 +207,10 @@ describe('Users API', function () {
                     });
             });
 
-            it('/users/:id/sent should return glenn\'s sent proposition', function (done) {
+            it('/users/:id/answers should return larry\'s pending answers', function (done) {
                 request(app)
-                    .get('/api/users/' + glennID + '/sent')
-                    .set('X-Authorization-Token', glennToken)
-                    .expect(200)
-                    .end(function (err, req) {
-                        assert.isArray(req.res.body, "result is not array");
-
-                        done();
-                    });
-            });
-
-            it('/users/:id/answers should return glenn\'s pending answers', function (done) {
-                request(app)
-                    .get('/api/users/' + glennID + '/answers')
-                    .set('X-Authorization-Token', glennToken)
+                    .get('/api/users/' + larryID + '/answers')
+                    .set('X-Authorization-Token', larryToken)
                     .expect(200)
                     .end(function (err, req) {
                         assert.isArray(req.res.body, "result is not array");
@@ -218,10 +220,10 @@ describe('Users API', function () {
             });
 
 
-            it('/users/:id/pendingall should return glenn\'s pending proposition and answers', function (done) {
+            it('/users/:id/pendingall should return larry\'s pending proposition and answers', function (done) {
                 request(app)
-                    .get('/api/users/' + glennID + '/pendingall')
-                    .set('X-Authorization-Token', glennToken)
+                    .get('/api/users/' + larryID + '/pendingall')
+                    .set('X-Authorization-Token', larryToken)
                     .expect(200)
                     .end(function (err, req) {
 
@@ -242,8 +244,8 @@ describe('Users API', function () {
 
         after(function (done) {
 
-            User.findByIdAndRemove(glennID, function (err, results) {
-                //console.log('glennID', results.id);
+            User.findByIdAndRemove(larryID, function (err, results) {
+                //console.log('larryID', results.id);
             });
 
             User.findByIdAndRemove(leoID, function (err, results) {
