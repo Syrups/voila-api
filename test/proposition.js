@@ -168,7 +168,7 @@ describe('Prospositions API', function () {
 				.set('X-Authorization-Token', sylToken)
 				.expect(200)
 				.end(function (err, req) {
-					console.log(req.res.body);
+					//console.log(req.res.body);
 					assert.isArray(req.res.body, "result is not array");
 
 					done();
