@@ -65,12 +65,12 @@ describe('Users API', function () {
             });
         });
 
-        describe('GET /users/authenticate', function () {
+        describe('POST /users/authenticate', function () {
 
             it('should authenticate with good credentials', function (done) {
 
                 request(app)
-                    .get('/api/users/authenticate')
+                    .post('/api/users/authenticate')
                     .send({
                         username: 'larry',
                         password: 'google'
@@ -89,7 +89,7 @@ describe('Users API', function () {
 
             it('should throw not found with bad username', function (done) {
                 request(app)
-                    .get('/api/users/authenticate')
+                    .post('/api/users/authenticate')
                     .send({
                         username: 'foobar',
                         password: 'bar'
@@ -99,7 +99,7 @@ describe('Users API', function () {
 
             it('should deny access with bad credentials', function (done) {
                 request(app)
-                    .get('/api/users/authenticate')
+                    .post('/api/users/authenticate')
                     .send({
                         username: 'larry',
                         password: 'baz'
