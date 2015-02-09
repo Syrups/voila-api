@@ -149,6 +149,7 @@ describe('Users API', function () {
                     .end(function (err, req) {
                         assert.isArray(req.res.body, "result is not array");
 
+                        console.log(req.res.body);
                         done();
                     });
             });
