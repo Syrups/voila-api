@@ -130,6 +130,17 @@ describe('Users API', function () {
                     });
             });
 
+
+            it('/users/:id/addFriends should throw 404 error', function (done) {
+                request(app)
+                    .put('/api/users/' + larryID + '/addfriends')
+                    .set('X-Authorization-Token', larryToken)
+                    .send({
+                        friend_id: "leoID",
+                    })
+                    .expect(404, done);
+            });
+
             it('/users/:id/friends should return larry\'s friends', function (done) {
                 request(app)
                     .get('/api/users/' + larryID + '/friends')

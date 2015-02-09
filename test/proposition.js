@@ -4,6 +4,7 @@ var assert = require('chai').assert;
 var Proposition = require('../lib/models/proposition');
 var User = require('../lib/models/user');
 var Answer = require('../lib/models/answer');
+var GeoData = require('../lib/models/geoData');
 
 var ObjectId = require('mongoose').Types.ObjectId;
 
@@ -91,10 +92,26 @@ describe('Prospositions API', function () {
 
 					assert('_id' in data, 'id is not present in Data');
 
-					prodsition1ID = data.id;
+					prodsition1ID = new ObjectId(data.id);
+
+					GeoData.find({
+						proposition: prodsition1ID
+					}, function (err, geos) {
+
+						assert.isArray(geos, "result is not array");
+						assert.lengthOf(geos, 1, 'geos has length of 1');
+
+
+						var geo1 = geos[0];
+
+						assert('_id' in geo1, 'id is not present in geo1');
+						assert('proposition' in geo1, 'proposition is not present in geos[0]');
+						assert('geo' in geo1, 'proposition is not present in geos[0]');
+
+						assert.isTrue(prodsition1ID.equals(geo1.proposition), 'geo1.proposition != prodsition1ID');
+					});
 
 					done();
-					//Proposition.findByIdAndRemove(data.id, done);
 				})
 		});
 
@@ -305,10 +322,20 @@ describe('Prospositions API', function () {
 		Proposition.findByIdAndRemove(prodsition1ID, function (err, results) {
 			//console.log('prodsition1ID', results.id);
 			Media.remove(fileName);
+			GeoData.remove({
+				proposition: prodsition1ID
+			}, function (err, results) {
+
+			});
 		});
 
 		Proposition.findByIdAndRemove(prodsition2ID, function (err, results) {
 			//console.log('prodsition2ID', results.id);
+			GeoData.remove({
+				proposition: prodsition2ID
+			}, function (err, results) {
+
+			});
 		});
 
 		User.findByIdAndRemove(larryID, function (err, results) {
