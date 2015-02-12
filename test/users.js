@@ -200,7 +200,7 @@ describe('Users API', function () {
                     .expect(200)
                     .end(function (err, req) {
 
-
+                        console.log(req.res.body);
                         assert.isArray(req.res.body, "result is not array");
 
                         done();

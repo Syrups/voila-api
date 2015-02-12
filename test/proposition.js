@@ -115,6 +115,20 @@ describe('Prospositions API', function () {
 				})
 		});
 
+		it('/users/:id/received should return syl\'s received proposition', function (done) {
+			request(app)
+				.get('/api/users/' + sylID + '/received')
+				.set('X-Authorization-Token', sylToken)
+				.expect(200)
+				.end(function (err, req) {
+
+					//console.log(req.res.body);
+					assert.isArray(req.res.body, "result is not array");
+
+					done();
+				});
+		});
+
 		it('should resend proposition with originalProposition param', function (done) {
 
 			request(app)
