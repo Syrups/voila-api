@@ -377,6 +377,27 @@ describe('Users API', function () {
                 });
         });
 
+        it('should update users device tokens', function (done) {
+            request(app)
+                .put('/api/users/'+userId)
+                .set('X-Authorization-Token', userToken)
+                .send({
+                    android_token: '<androidtoken>',
+                    ios_token: '<iostoken>'
+                })
+                .expect('Content-Type', /json/)
+                .expect(200)
+                .end(function (err, req) {
+                    var res = JSON.parse(req.res.text);
+
+                    assert.isArray(res.androidDeviceTokens, "androidDeviceTokens is not an array");
+                    assert.isArray(res.appleDeviceTokens, "appleDeviceTokens is not an array");
+                    assert(res.androidDeviceTokens.indexOf('<androidtoken>') != -1 && res.appleDeviceTokens.indexOf('<iostoken>') != -1, 'Device tokens not updated correctly');
+
+                    done();
+                });
+        });
+
         after(function (done) {
             User.findByIdAndRemove(userId, done);
         });
