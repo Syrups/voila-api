@@ -346,4 +346,39 @@ describe('Users API', function () {
             User.findByIdAndRemove(id, done);
         });
     });
+
+    describe('PUT /users/:id', function () {
+
+        var userId, userToken;
+
+        before(function (done) {
+            Utils.createUser('larry', 'google', 'g@gmail.com', function (res) {
+                userId = res.id;
+                userToken = res.token;
+                done();
+            });
+        });
+
+        it('should update users avatar', function (done) {
+            request(app)
+                .put('/api/users/'+userId)
+                .set('X-Authorization-Token', userToken)
+                .send({
+                    avatar: 'sample.jpg'
+                })
+                .expect('Content-Type', /json/)
+                .expect(200)
+                .end(function (err, req) {
+                    var res = JSON.parse(req.res.text);
+                    assert('avatar' in res, 'Avatar was not updated');
+                    assert(res.avatar == 'sample.jpg', 'Avatar was not updated correctly');
+
+                    done();
+                });
+        });
+
+        after(function (done) {
+            User.findByIdAndRemove(userId, done);
+        });
+    });
 });
