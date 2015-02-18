@@ -18,13 +18,27 @@ describe('Users API', function () {
     describe('POST /users', function () {
         it('should return new user data', function (done) {
 
-            Utils.createUser('foo', 'bar', 'foo@gmail.com', function (user) {
+            request(app)
+                .post('/api/users')
+                .send({
+                    username: 'foo',
+                    password: 'bar',
+                    email: 'foo@baz.com',
+                    ios_device_token: '<devicetoken>'
+                })
+                .expect(201)
+                .end(function (err, req) {
 
-                assert('id' in user, 'ID is not present');
-                assert('token' in user, 'Token is not present');
+                    res = JSON.parse(req.res.text);
 
-                User.findByIdAndRemove(user.id, done);
-            });
+                    assert('appleDeviceTokens' in res, 'Apple device is not in user');
+                    assert(res.appleDeviceTokens[0] == '<devicetoken>', 'Apple device not the good one');
+                    assert('id' in res, 'ID is not in user');
+                    assert('token' in res, 'Token is not in user');
+
+                    User.findByIdAndRemove(res.id, done);
+                });
+
         });
 
         it('should reponds 409 conflict if username is already taken', function (done) {
