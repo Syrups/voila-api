@@ -7,6 +7,10 @@
  */
 'use strict';
 
+if (!process.env.NODE_ENV) {
+	process.env.NODE_ENV = 'development'
+}
+
 var app = require('./lib/app').app;
 var port = Number(process.env.PORT || 5000);
 
