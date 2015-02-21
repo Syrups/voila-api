@@ -1,6 +1,7 @@
 var app = require('../lib/app').app;
 var request = require('supertest');
-var assert = require('chai').assert;
+var assert = require('chai').assert,
+expect =  require('chai').expect;
 var Proposition = require('../lib/models/proposition');
 var User = require('../lib/models/user');
 var Answer = require('../lib/models/answer');
@@ -145,6 +146,9 @@ describe('Prospositions API', function () {
 					data = res.data;
 
 					assert('_id' in data, 'id is not present in Data');
+					expect(prodsition1ID.equals(data.originalProposition)).to.be.true;
+					
+					//assert.isTrue(, 'data.originalProposition != prodsition1ID');
 
 					prodsition2ID = data.id;
 
