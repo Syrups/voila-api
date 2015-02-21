@@ -148,7 +148,14 @@ describe('Prospositions API', function () {
 
 					prodsition2ID = data.id;
 
-					done();
+					Proposition.findById(prodsition1ID, function (err, proposition) {
+						assert.isArray(proposition.allReceivers, 'Original proposition does not contains all receivers array');
+
+						// console.log(proposition.allReceivers);
+						assert(proposition.allReceivers.indexOf(leoID) != -1, 'Leo is not present in ALL receivers of the original prop');
+						done();
+					})
+					
 				});
 		});
 
