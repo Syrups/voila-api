@@ -145,6 +145,7 @@ describe('Prospositions API', function () {
 					data = res.data;
 
 					assert('_id' in data, 'id is not present in Data');
+					console.log(data);
 
 					prodsition2ID = data.id;
 
