@@ -14,6 +14,6 @@ if (!process.env.NODE_ENV) {
 var app = require('./lib/app').app;
 var port = Number(process.env.PORT || 8080);
 
-app.listen(8080, '0.0.0.0');
+app.listen(port, '0.0.0.0');
 
 console.log(' [x] Listening on port ' + port);
