@@ -1,3 +1,3 @@
 module.exports = {
-	mediaRootUrl: 'http://tenveux.herokuapp.com/media'
+	mediaRootUrl: 'http://tenveuxmedia.storage.googleapis.com'
 };
