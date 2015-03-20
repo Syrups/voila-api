@@ -1,6 +1,6 @@
 module.exports = {
-	SERVED          : 1,
-	TAKEN           : 2,
-	FRIEND_WANNA    : 3,
-	FRIEND_ACCEPTED : 4,
+	SERVED          : 0
+	TAKEN           : 1,
+	FRIEND_WANNA    : 2,
+	FRIEND_ACCEPTED : 3,
 };
